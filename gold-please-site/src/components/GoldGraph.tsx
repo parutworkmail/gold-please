@@ -5,8 +5,8 @@ const GoldGraph: React.FC = () => {
   const [timeframe, setTimeframe] = useState<Timeframe>('1m');
   const [visibleCount, setVisibleCount] = useState(20);
   const [scrollOffset, setScrollOffset] = useState(0);
-  const [priceMin, setPriceMin] = useState(4695);
-  const [priceMax, setPriceMax] = useState(4715);
+  const [priceMin] = useState(4695);
+  const [priceMax] = useState(4715);
   const chartRef = useRef<HTMLDivElement>(null);
   const { prices, loading } = useGoldPrices(timeframe);
   const width = 980;
@@ -42,38 +42,6 @@ const GoldGraph: React.FC = () => {
 
   const priceY = (price: number) => padding + ((maxPrice - price) / priceRange) * chartHeight;
   const volumeY = (volume: number) => padding + chartHeight + 24 + ((maxVolume - volume) / maxVolume) * volumeHeight;
-
-  const handleMouseWheel = (e: WheelEvent) => {
-    if (!chartRef.current?.contains(e.target as Node)) return;
-    
-    e.preventDefault();
-    
-    if (e.shiftKey || e.ctrlKey) {
-      const zoomFactor = e.deltaY > 0 ? 1.1 : 0.9;
-      const midPrice = (priceMin + priceMax) / 2;
-      const halfRange = (priceMax - priceMin) / 2;
-      const newHalfRange = halfRange * zoomFactor;
-      
-      const newMin = Math.max(0, midPrice - newHalfRange);
-      const newMax = Math.min(10000, midPrice + newHalfRange);
-      
-      setPriceMin(newMin);
-      setPriceMax(newMax);
-    } else {
-      const zoomFactor = e.deltaY > 0 ? 1.1 : 0.9;
-      const newCount = Math.round(visibleCount * zoomFactor);
-      setVisibleCount(Math.max(3, Math.min(prices.length, newCount)));
-      setScrollOffset(0);
-    }
-  };
-
-  React.useEffect(() => {
-    const chart = chartRef.current;
-    if (!chart) return;
-    
-    chart.addEventListener('wheel', handleMouseWheel, { passive: false });
-    return () => chart.removeEventListener('wheel', handleMouseWheel);
-  }, [visibleCount, priceMin, priceMax, prices.length]);
 
   return (
     <div style={{ padding: '1rem', border: '1px solid #d1d5db', borderRadius: 12, margin: '1rem', background: '#ffffff' }} ref={chartRef}>
