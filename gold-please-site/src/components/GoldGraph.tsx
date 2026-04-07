@@ -76,7 +76,7 @@ const GoldGraph: React.FC = () => {
   }, [visibleCount, priceMin, priceMax, prices.length]);
 
   return (
-    <div style={{ padding: '1rem', border: '1px solid #d1d5db', borderRadius: 12, margin: '1rem', background: '#ffffff' }} ref={chartRef} onWheel={handleMouseWheel}>
+    <div style={{ padding: '1rem', border: '1px solid #d1d5db', borderRadius: 12, margin: '1rem', background: '#ffffff' }} ref={chartRef}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
         <h2 style={{ margin: 0, fontSize: 22 }}>Gold Price Candlestick Chart</h2>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
